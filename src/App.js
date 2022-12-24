@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Login from "./components/Authentication/Login/Login";
+import Signup from "./components/Authentication/Signup/Signup";
+import LandingPage from "./components/LandingPage/LandingPage";
+import Dashboard from "./components/Lilies/Dashboard/Dashboard";
+import Lilies from "./components/Lilies/Lilies";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/auth/login" element={<Login />} />
+        <Route path="/auth/signup" element={<Signup />} />
+        <Route path="/lilies/dashboard" element={<Lilies />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

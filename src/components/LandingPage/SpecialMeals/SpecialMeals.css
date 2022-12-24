@@ -1,0 +1,36 @@
+#special-meals-container {
+  min-height: 100vh;
+}
+
+.special-meals-description {
+  text-align: center;
+  padding: 6em 0em;
+}
+
+.special-meals {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.special-meals-description-title {
+  font-size: 2.5rem;
+}
+
+.special-meals-description-description {
+  font-size: 1.2rem;
+  opacity: 0.8;
+  width: 42%;
+  margin: 1.2em auto;
+  line-height: 2em;
+  font-weight: regular;
+}
+
+.special-meals-item-container {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}

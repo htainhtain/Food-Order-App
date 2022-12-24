@@ -1,0 +1,5 @@
+#landing-page-container {
+  width: 100%;
+  background-color: var(--dark-green-color);
+  color: var(--text-color-white);
+}

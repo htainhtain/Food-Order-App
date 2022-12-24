@@ -1,0 +1,10 @@
+.auth-input {
+  border: 0.5px solid var(--dark-yellow-color);
+  padding: 2em;
+  border-radius: 5px;
+}
+
+input::placeholder {
+  color: var(--text-light-dark-placeholder);
+  opacity: 0.5;
+}

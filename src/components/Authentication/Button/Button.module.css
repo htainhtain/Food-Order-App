@@ -1,0 +1,10 @@
+.button {
+  border: 0;
+  background-color: var(--dark-green-color);
+  padding: 1em;
+  color: var(--text-color-yellow);
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 5px;
+}

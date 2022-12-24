@@ -1,0 +1,26 @@
+.special-meals-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+.meal-item-img-container {
+  width: 15em;
+}
+
+.meal-item-img {
+  width: 100%;
+  height: 100%;
+}
+
+.meal-item-title {
+  color: var(--text-color-yellow);
+  font-size: 1.6em;
+}
+
+.meal-item-description {
+  width: 80%;
+  text-align: center;
+}

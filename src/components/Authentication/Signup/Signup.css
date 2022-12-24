@@ -1,0 +1,59 @@
+#signup-container {
+  /* width: 100vw; */
+  height: 100vh;
+  overflow: hidden;
+}
+
+.signup {
+  width: 100%;
+  display: flex;
+}
+
+.signup-img-container {
+  width: 50%;
+  height: 100vh;
+  position: relative;
+}
+
+.filter {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: var(--dark-filter-yellow-color);
+  opacity: 0.4;
+}
+
+.signup-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.signup-form-container {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3em;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  gap: 3em;
+}
+
+.signup-form-title {
+  font-size: 1.6rem;
+}
+
+.account-login-action {
+  color: var(--text-color-green);
+}
+
+.signup-login-link{
+    font-weight: 600;
+}

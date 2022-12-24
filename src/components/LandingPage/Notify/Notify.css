@@ -1,0 +1,54 @@
+#notify-container {
+  min-height: 50vh;
+}
+
+.notify {
+  width: 80%;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4em 0em;
+}
+
+.notify-description-title {
+  font-size: 2.25rem;
+  color: var(--text-color-yellow);
+}
+
+.notify-description-description {
+  font-size: 1.12em;
+  width: 65%;
+  line-height: 2em;
+  margin-top: 0.6em;
+}
+
+.notify-form {
+  display: flex;
+  gap: 0.4em;
+  font-size: 1.12rem;
+}
+
+.notify-form-input {
+  height: 2em;
+  width: 23em;
+  padding: 0.2em 1em;
+  border-radius: 5px;
+  font-size: 1.12em;
+}
+
+.notify-form-input:focus {
+  outline: none;
+}
+
+.notify-form-button {
+  width: 50%;
+  height: 2.6em;
+  border-radius: 5px;
+  background-color: var(--dark-yellow-color);
+  color: var(--text-color-green);
+  font-size: 1.12em;
+  border: 0;
+  font-weight: 600;
+}
