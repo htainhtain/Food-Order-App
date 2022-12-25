@@ -16,12 +16,16 @@ const DashboardMeal = (props) => {
         <h4>{props.meal.name}</h4>
         <p className="dashboard-meal-description">{props.meal.description}</p>
 
-        <form className="dashboard-meal-action">
+        <div className="dashboard-meal-action">
           <p className="dashboard-meal-action-price">฿ {props.meal.price}</p>
-          <button type="submit" className="add-to-cart-btn">
+          <button
+            // type="submit"
+            className="add-to-cart-btn"
+            onClick={props.cartOpenHandler}
+          >
             Add to cart
           </button>
-        </form>
+        </div>
       </div>
     </li>
   );

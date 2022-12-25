@@ -5,8 +5,7 @@ import { meals } from "../Meals/meals.js";
 
 import "./Dashboard.css";
 
-const Dashboard = () => {
-  console.log(meals);
+const Dashboard = (props) => {
   return (
     <section id="dashboard-container">
       <div className="dashboard">
@@ -25,7 +24,13 @@ const Dashboard = () => {
         </div>
         <ul className="dashboard-meals-container">
           {meals.map((meal) => {
-            return <DashboardMeal meal={meal} key={meal.id} />;
+            return (
+              <DashboardMeal
+                meal={meal}
+                key={meal.id}
+                cartOpenHandler={props.cartOpenHandler}
+              />
+            );
           })}
           <li className="dashboard-meals"></li>
         </ul>

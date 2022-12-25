@@ -42,13 +42,12 @@
   border: 0px;
   cursor: pointer;
   color: var(--dark-bright-green-color);
-  font-size: 0.8rem;
+  font-size: 1rem;
+  font: inherit;
+  padding: 0;
 }
 
-.dashboard-meal-action-price{
-    color: var(--text-color-green);
-    font-weight: 800;
+.dashboard-meal-action-price {
+  color: var(--text-color-green);
+  font-weight: 800;
 }
-
-
-
