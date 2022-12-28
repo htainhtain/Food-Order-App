@@ -1,11 +1,11 @@
 import React from "react";
 
 import Modal from "../../UI/Modal/Modal";
-import CartItem from "./CartItem/CartItem";
+import OrderItem from "./OrderItem/OrderItem";
 
 import pastaImg from "../../../assets/img/meals/pasta.png";
 
-import "./Cart.css";
+import "./Order.css";
 
 const meals = [
   {
@@ -17,6 +17,7 @@ const meals = [
     timetocook: "10-20",
     availablePiecs: 10,
     price: 100,
+    status: "Delivered",
     imgUrl: pastaImg,
   },
   {
@@ -28,10 +29,11 @@ const meals = [
     timetocook: "10-20",
     availablePiecs: 10,
     price: 100,
+    status: "Delivered",
     imgUrl: `${pastaImg}`,
   },
   {
-    id: "m2",
+    id: "m1",
     name: "Stir fry Pasta",
     description: "Stir fry pasta yada yada yada because of Sesan",
     full_description:
@@ -39,17 +41,18 @@ const meals = [
     timetocook: "10-20",
     availablePiecs: 10,
     price: 100,
+    status: "Cooking",
     imgUrl: `${pastaImg}`,
   },
 ];
 
-const Cart = (props) => {
+const Order = (props) => {
   return (
-    <Modal closeHandler={props.cartCloseHandler}>
+    <Modal closeHandler={props.orderCloseHandler}>
       <section id="order-container">
         <div className="order-container__order">
           <header className="order-header">
-            <h4 className="cart-header__title">Your cart</h4>
+            <h4 className="cart-header__title">Your orders</h4>
           </header>
           <table className="order-table">
             <thead>
@@ -59,31 +62,21 @@ const Cart = (props) => {
                   Qty
                 </th>
                 <th className="order-table__table-header order-table__table-header--center">
-                  Unit Price
+                  Price
                 </th>
                 <th className="order-table__table-header order-table__table-header--center">
-                  Sub-total
+                  Status
                 </th>
               </tr>
             </thead>
             {meals.map((meal) => {
-              return <CartItem meal={meal} key={meal.id} />;
+              return <OrderItem meal={meal} key={meal.id} />;
             })}
           </table>
-          <p className="order-total-price">
-            Total: <span className="order-total-price__number">฿ 3000</span>
-          </p>
-          <button
-            type="button"
-            className="order-checkout-button"
-            onClick={props.checkOutOpenHandler}
-          >
-            Checkout
-          </button>
         </div>
       </section>
     </Modal>
   );
 };
 
-export default Cart;
+export default Order;

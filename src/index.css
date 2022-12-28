@@ -8,6 +8,7 @@ body {
   font-family: "Poppins", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 code {
@@ -47,6 +48,7 @@ ul {
   --text-color-green: #00302e;
   --text-light-dark-placeholder: #00302e;
   --text-light-grey: #707070;
+  --text-colro-red: #C92C33;
   --dark-yellow-color: #fbddbb;
   --dark-light-grey-color: #fbfbfb;
   --dark-green-color: #00302e;

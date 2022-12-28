@@ -47,10 +47,12 @@
 }
 
 .signup-form-title {
+  text-align: center;
   font-size: 1.6rem;
 }
 
 .account-login-action {
+  text-align: center;
   color: var(--text-color-green);
 }
 

@@ -5,7 +5,7 @@ import "./Modal.css";
 
 const Backdrop = (props) => {
   return (
-    <div className="backdrop" onClick={props.cartCloseHandler}>
+    <div className="backdrop" onClick={props.closeHandler}>
       <div className="content">{props.children}</div>
     </div>
   );
@@ -21,7 +21,7 @@ const Modal = (props) => {
   return (
     <>
       {ReactDOM.createPortal(
-        <Backdrop cartCloseHandler={props.cartCloseHandler} />,
+        <Backdrop closeHandler={props.closeHandler} />,
         portals
       )}
       {ReactDOM.createPortal(

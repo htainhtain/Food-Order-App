@@ -1,7 +1,6 @@
 import React from "react";
-import DashboardMeal from "../../UI/DashboardMeal/DashboardMeal.js";
 
-import { meals } from "../Meals/meals.js";
+import DashboardMeal from "../../UI/DashboardMeal/DashboardMeal.js";
 
 import "./Dashboard.css";
 
@@ -23,16 +22,15 @@ const Dashboard = (props) => {
           </div>
         </div>
         <ul className="dashboard-meals-container">
-          {meals.map((meal) => {
+          {props.meals.map((meal) => {
             return (
               <DashboardMeal
                 meal={meal}
                 key={meal.id}
-                cartOpenHandler={props.cartOpenHandler}
+                cartOpenHandler={props.mealCartOpenHandler.bind(null, meal.id)}
               />
             );
           })}
-          <li className="dashboard-meals"></li>
         </ul>
       </div>
     </section>

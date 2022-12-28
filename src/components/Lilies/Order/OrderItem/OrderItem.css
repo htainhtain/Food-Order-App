@@ -1,0 +1,39 @@
+.order-table__row {
+  font-size: 1.2em;
+  color: var(--text-color-green);
+  font-weight: 600;
+  padding: 3em 0em;
+}
+
+td {
+  text-align: center;
+}
+
+.order-item-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.order-img-container {
+  width: 4em;
+}
+
+.order-item-description {
+  text-align: left;
+}
+
+.order-img {
+  width: 100%;
+  height: 100%;
+}
+
+.order-item-description__button {
+  font-size: 0.8rem;
+  color: var(--text-colro-red);
+  background-color: inherit;
+  border: 0;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 0;
+}
