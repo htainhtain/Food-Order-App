@@ -11,7 +11,6 @@ import "./Login.css";
 
 const loginReducer = (prevState, action) => {
   if (action.type === "EMAIL_INPUT_CHANGED") {
-    console.log(action.value.includes("@"));
     return {
       email: action.value,
       password: prevState.password,

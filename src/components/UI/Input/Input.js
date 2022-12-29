@@ -6,6 +6,7 @@ const Input = (props) => {
   return (
     <input
       type={props.type}
+      name={props.type}
       placeholder={props.placeholder}
       className={classes["auth-input"]}
       value={props.value}

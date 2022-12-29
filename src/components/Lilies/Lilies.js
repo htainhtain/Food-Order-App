@@ -19,6 +19,7 @@ const Lilies = () => {
   const [checkOutIsOpen, setCheckOutIsOpen] = useState(false);
   const [profileIsOpen, setProfileIsOpen] = useState(false);
   const [MealCartIsOpen, setMealCartIsOpenIsOpen] = useState(false);
+  const [mealCartMeal, setMealCartMeal] = useState();
 
   const cartOpenHandler = () => {
     setCartIsOpen(true);
@@ -28,8 +29,10 @@ const Lilies = () => {
     setCartIsOpen(false);
   };
 
-  const mealCartOpenHandler = () => {
+  const mealCartOpenHandler = (id) => {
     setMealCartIsOpenIsOpen(true);
+    const mealCartMeal = meals.filter((meal) => meal.id === id);
+    setMealCartMeal(mealCartMeal);
   };
 
   const mealCartCloseHandler = () => {
@@ -63,7 +66,10 @@ const Lilies = () => {
   return (
     <section id="lilies-container">
       {MealCartIsOpen && (
-        <MealCart mealCartCloseHandler={mealCartCloseHandler} />
+        <MealCart
+          meal={mealCartMeal}
+          mealCartCloseHandler={mealCartCloseHandler}
+        />
       )}
       {cartIsOpen && (
         <Cart

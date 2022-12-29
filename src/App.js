@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/Authentication/Login/Login";
 import Signup from "./components/Authentication/Signup/Signup";
 import LandingPage from "./components/LandingPage/LandingPage";
-import Dashboard from "./components/Lilies/Dashboard/Dashboard";
 import Lilies from "./components/Lilies/Lilies";
 
 function App() {
