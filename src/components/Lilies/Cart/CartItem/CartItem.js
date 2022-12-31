@@ -3,7 +3,6 @@ import React from "react";
 import "./CartItem.css";
 
 const CartItem = (props) => {
-
   return (
     <tbody>
       <tr className="order-table__row">
@@ -17,14 +16,18 @@ const CartItem = (props) => {
           </div>
           <div className="order-item-description">
             <h5>{props.meal.name}</h5>
-            <button type="button" className="order-item-description__button">
+            <button
+              type="button"
+              className="order-item-description__button"
+              onClick={props.removeMealFromCart}
+            >
               remove
             </button>
           </div>
         </td>
-        <td>3</td>
+        <td>{props.meal.cartAmount}</td>
         <td>฿ {props.meal.price}</td>
-        <td>฿ 1000</td>
+        <td>฿ {props.meal.cartAmount * props.meal.price}</td>
       </tr>
     </tbody>
   );

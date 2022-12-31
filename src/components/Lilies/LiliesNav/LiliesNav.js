@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import HomeIcon from "@mui/icons-material/Home";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
@@ -7,8 +7,13 @@ import BookmarkOutlinedIcon from "@mui/icons-material/BookmarkOutlined";
 import logo from "../../../assets/img/navbar/logo.png";
 
 import "./LiliesNav.css";
+import { mealContext } from "../../../context/MealContext";
 
 const LiliesNav = (props) => {
+  //context
+  const mealCtx = useContext(mealContext);
+  const { selectedMeals } = mealCtx;
+
   return (
     <nav className="lilies-nav-container">
       <div className="lilies-nav">
@@ -39,7 +44,9 @@ const LiliesNav = (props) => {
           <li className="lilies-nav-item" onClick={props.cartOpenHandler}>
             <BookmarkOutlinedIcon />
             <p>Your cart</p>
-            <p className="lilies-nav-count cart-count">7</p>
+            <p className="lilies-nav-count cart-count">
+              {selectedMeals.totalMealsInCart}
+            </p>
           </li>
         </ul>
       </div>

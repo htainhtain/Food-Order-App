@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { mealContext } from "../../../context/MealContext";
 
 import Modal from "../../UI/Modal/Modal";
 
 import "./MealCart.css";
 
 const MealCart = (props) => {
+  //context
+  const mealCtx = useContext(mealContext);
+  const { addMealToCart } = mealCtx;
+
+  // useState
   const [mealCount, setMealCount] = useState(1);
 
   const meal = props.meal[0];
@@ -23,6 +29,8 @@ const MealCart = (props) => {
 
   const cartSubmitHandler = (e) => {
     e.preventDefault();
+    const mealWithAmount = { ...meal, cartAmount: +mealCount };
+    addMealToCart(mealWithAmount);
     console.log(mealCount, " has been added");
   };
 
@@ -60,6 +68,8 @@ const MealCart = (props) => {
                 className="action-input"
                 value={mealCount}
                 onChange={mealCountHandler}
+                min={1}
+                max={10}
               />
               <button
                 type="button"
