@@ -13,6 +13,7 @@ export const meals = [
     availablePiecs: 10,
     price: 100,
     imgUrl: pastaImg,
+    status: 'Cooking',
   },
   {
     id: "m1",
@@ -24,6 +25,7 @@ export const meals = [
     availablePiecs: 20,
     price: 200,
     imgUrl: mealballsImg,
+    status: 'Delivered',
   },
   {
     id: "m2",
@@ -35,6 +37,7 @@ export const meals = [
     availablePiecs: 30,
     price: 150,
     imgUrl: burgerImg,
+    status: 'Cooking',
   },
   {
     id: "m3",
@@ -46,6 +49,7 @@ export const meals = [
     availablePiecs: 20,
     price: 250,
     imgUrl: mealballsImg,
+    status: 'Cooking',
   },
   {
     id: "m4",
@@ -57,6 +61,7 @@ export const meals = [
     availablePiecs: 15,
     price: 300,
     imgUrl: pastaImg,
+    status: 'Cooking',
   },
   {
     id: "m5",
@@ -68,5 +73,6 @@ export const meals = [
     availablePiecs: 17,
     price: 400,
     imgUrl: burgerImg,
+    status: 'Cooking',
   },
 ];

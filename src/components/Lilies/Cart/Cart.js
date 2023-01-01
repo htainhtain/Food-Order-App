@@ -48,7 +48,7 @@ const Cart = (props) => {
             })}
           </table>
           <p className="order-total-price">
-            Total:
+            Total:&nbsp;
             <span className="order-total-price__number">
               ฿ {selectedMeals.totalPrice}
             </span>

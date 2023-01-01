@@ -3,7 +3,6 @@ import React from "react";
 import "./OrderItem.css";
 
 const OrderItem = (props) => {
-
   return (
     <tbody>
       <tr className="order-table__row">
@@ -22,8 +21,8 @@ const OrderItem = (props) => {
             </button>
           </div>
         </td>
-        <td>3</td>
-        <td>฿ 10000</td>
+        <td>{props.meal.cartAmount}</td>
+        <td>฿ {props.meal.cartAmount * props.meal.price}</td>
         <td>{props.meal.status}</td>
       </tr>
     </tbody>

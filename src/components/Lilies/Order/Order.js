@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import Modal from "../../UI/Modal/Modal";
 import OrderItem from "./OrderItem/OrderItem";
@@ -6,6 +6,7 @@ import OrderItem from "./OrderItem/OrderItem";
 import pastaImg from "../../../assets/img/meals/pasta.png";
 
 import "./Order.css";
+import { mealContext } from "../../../context/MealContext";
 
 const meals = [
   {
@@ -47,6 +48,11 @@ const meals = [
 ];
 
 const Order = (props) => {
+  const mealCtx = useContext(mealContext);
+  const { orders } = mealCtx;
+
+  console.log(orders);
+
   return (
     <Modal closeHandler={props.orderCloseHandler}>
       <section id="order-container">
@@ -69,7 +75,7 @@ const Order = (props) => {
                 </th>
               </tr>
             </thead>
-            {meals.map((meal) => {
+            {orders.map((meal) => {
               return <OrderItem meal={meal} key={meal.id} />;
             })}
           </table>

@@ -13,6 +13,8 @@ const LiliesNav = (props) => {
   //context
   const mealCtx = useContext(mealContext);
   const { selectedMeals } = mealCtx;
+  const { orders } = mealCtx;
+  console.log(orders)
 
   return (
     <nav className="lilies-nav-container">
@@ -39,7 +41,7 @@ const LiliesNav = (props) => {
           <li className="lilies-nav-item" onClick={props.orderOpenHandler}>
             <Inventory2OutlinedIcon />
             <p>Orders</p>
-            <p className="lilies-nav-count order-count">6</p>
+            <p className="lilies-nav-count order-count">{orders.length}</p>
           </li>
           <li className="lilies-nav-item" onClick={props.cartOpenHandler}>
             <BookmarkOutlinedIcon />

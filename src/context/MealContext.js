@@ -1,9 +1,12 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useState } from "react";
 
 export const mealContext = createContext({
   selectedMeals: [],
   addMealToCart: () => {},
   removeMealFromCart: () => {},
+  clearMealFromCart: () => {},
+  orders: [],
+  addOrders: () => {},
 });
 
 const selectedMealsreducer = (prevstate, action) => {
@@ -61,6 +64,14 @@ const selectedMealsreducer = (prevstate, action) => {
       totalPrice: totalPrice,
     };
   }
+
+  if (action.type === "CLEAR_MEALS_FROM_CART") {
+    return {
+      selectedMeals: [],
+      totalMealsInCart: 0,
+      totalPrice: 0,
+    };
+  }
 };
 
 const MealContextProvider = (props) => {
@@ -73,6 +84,8 @@ const MealContextProvider = (props) => {
     }
   );
 
+  const [orders, setOrders] = useState([]);
+
   const addMealToCart = (meal) => {
     selectedMealsDispatch({ type: "ADD_MEALS_TO_CART", meal: meal });
   };
@@ -81,12 +94,25 @@ const MealContextProvider = (props) => {
     selectedMealsDispatch({ type: "REMOVE_MEALS_FROM_CART", id: id });
   };
 
+  const clearMealFromCart = () => {
+    selectedMealsDispatch({ type: "CLEAR_MEALS_FROM_CART" });
+  };
+
+  const addOrders = (meals) => {
+    setOrders(meals);
+  };
+
+  console.log("orders in context: ", orders);
+
   return (
     <mealContext.Provider
       value={{
         selectedMeals: selectedMeals,
         addMealToCart: addMealToCart,
         removeMealFromCart: removeMealFromCart,
+        clearMealFromCart: clearMealFromCart,
+        orders: orders,
+        addOrders: addOrders,
       }}
     >
       {props.children}
