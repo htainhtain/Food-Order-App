@@ -33,8 +33,8 @@ const loginReducer = (prevState, action) => {
     return {
       email: "",
       password: "",
-      emailIsValid: true,
-      passwordIsValid: true,
+      emailIsValid: null,
+      passwordIsValid: null,
       formIsValid: false,
     };
   }
@@ -48,8 +48,8 @@ const Login = () => {
   const [loginState, loginDispatch] = useReducer(loginReducer, {
     email: "",
     password: "",
-    emailIsValid: true,
-    passwordIsValid: true,
+    emailIsValid: null,
+    passwordIsValid: null,
     formIsValid: false,
   });
 
@@ -113,7 +113,7 @@ const Login = () => {
                 value={loginState.email}
                 onChangeHandler={emailChangeHandler}
                 onBlurHandler={emailOnBlurHandler}
-                className={!loginState.emailIsValid ? "not-valid" : ""}
+                className={loginState.emailIsValid === false ? "not-valid" : ""}
               />
               <Input
                 type="password"
@@ -121,7 +121,9 @@ const Login = () => {
                 value={loginState.password}
                 onChangeHandler={passwordChangeHandler}
                 onBlurHandler={passwordOnBlurHandler}
-                className={!loginState.passwordIsValid ? "not-valid" : ""}
+                className={
+                  loginState.passwordIsValid === false ? "not-valid" : ""
+                }
               />
               <Button
                 type="submit"

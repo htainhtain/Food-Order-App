@@ -81,10 +81,10 @@ const paymentReducer = (prevState, action) => {
       expDate: "",
       cvv: "",
       pin: "",
-      cardNoIsValid: true,
-      expDateIsValid: true,
-      cvvIsValid: true,
-      pinIsValid: true,
+      cardNoIsValid: null,
+      expDateIsValid: null,
+      cvvIsValid: null,
+      pinIsValid: null,
       formIsValid: false,
     };
   }
@@ -105,10 +105,10 @@ const Checkout = (props) => {
     expDate: "",
     cvv: "",
     pin: "",
-    cardNoIsValid: true,
-    expDateIsValid: true,
-    cvvIsValid: true,
-    pinIsValid: true,
+    cardNoIsValid: null,
+    expDateIsValid: null,
+    cvvIsValid: null,
+    pinIsValid: null,
     formIsValid: false,
   });
 
@@ -190,7 +190,9 @@ const Checkout = (props) => {
               value={paymentState.cardNo}
               onChangeHandler={cardNoChangehandler}
               onBlurHandler={cardNoOnBlurHandler}
-              className={!paymentState.cardNoIsValid ? "not-valid" : ""}
+              className={
+                paymentState.cardNoIsValid === false ? "not-valid" : ""
+              }
             />
             <Input
               type="text"
@@ -200,7 +202,9 @@ const Checkout = (props) => {
               value={paymentState.expDate}
               onChangeHandler={expDateChangehandler}
               onBlurHandler={expDateOnBlurHandler}
-              className={!paymentState.expDateIsValid ? "not-valid" : ""}
+              className={
+                paymentState.expDateIsValid === false ? "not-valid" : ""
+              }
             />
             <Input
               type="text"
@@ -210,7 +214,7 @@ const Checkout = (props) => {
               value={paymentState.cvv}
               onChangeHandler={cvvChangehandler}
               onBlurHandler={cvvOnBlurHandler}
-              className={!paymentState.cvvIsValid ? "not-valid" : ""}
+              className={paymentState.cvvIsValid === false ? "not-valid" : ""}
             />
             <Input
               type="text"
@@ -220,7 +224,7 @@ const Checkout = (props) => {
               value={paymentState.pin}
               onChangeHandler={pinChangehandler}
               onBlurHandler={pinOnBlurHandler}
-              className={!paymentState.pinIsValid ? "not-valid" : ""}
+              className={paymentState.pinIsValid === false ? "not-valid" : ""}
             />
             <Button
               type="submit"

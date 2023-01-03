@@ -57,9 +57,9 @@ const Signup = () => {
     firstName: "",
     email: "",
     password: "",
-    firstNameIsValid: true,
-    emailIsValid: true,
-    passwordIsValid: true,
+    firstNameIsValid: null,
+    emailIsValid: null,
+    passwordIsValid: null,
     formIsValid: false,
   });
   const navigate = useNavigate();
@@ -127,7 +127,9 @@ const Signup = () => {
                 value={signUpState.firstName}
                 onChangeHandler={firstNameChangeHandler}
                 onBlurHandler={firstNameOnBlurHandler}
-                className={!signUpState.firstNameIsValid ? "not-valid" : ""}
+                className={
+                  signUpState.firstNameIsValid === false ? "not-valid" : ""
+                }
               />
               <Input
                 type="email"
@@ -135,7 +137,9 @@ const Signup = () => {
                 value={signUpState.email}
                 onChangeHandler={emailChangeHandler}
                 onBlurHandler={emailOnBlurHandler}
-                className={!signUpState.emailIsValid ? "not-valid" : ""}
+                className={
+                  signUpState.emailIsValid === false ? "not-valid" : ""
+                }
               />
               <Input
                 type="password"
@@ -143,7 +147,9 @@ const Signup = () => {
                 value={signUpState.password}
                 onChangeHandler={passwordChangeHandler}
                 onBlurHandler={passwordOnBlurHandler}
-                className={!signUpState.passwordIsValid ? "not-valid" : ""}
+                className={
+                  signUpState.passwordIsValid === false ? "not-valid" : ""
+                }
               />
               <Button
                 type="submit"
