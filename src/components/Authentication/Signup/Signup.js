@@ -14,10 +14,12 @@ const signUpReducer = (prevState, action) => {
       firstName: action.value,
       email: prevState.email,
       password: prevState.password,
-      formIsValid:
-        action.value &&
-        prevState.email.includes("@") &&
-        prevState.password.length > 6,
+      firstNameIsValid: action.value ? true : false,
+      emailIsValid: prevState.emailIsValid,
+      passwordIsValid: prevState.passwordIsValid,
+      formIsValid: action.value
+        ? true
+        : false && prevState.emailIsValid && prevState.passwordIsValid,
     };
   }
   if (action.type === "EMAIL_INPUT_CHANGED") {
@@ -25,10 +27,13 @@ const signUpReducer = (prevState, action) => {
       firstName: prevState.firstName,
       email: action.value,
       password: prevState.password,
+      firstNameIsValid: prevState.firstNameIsValid,
+      emailIsValid: action.value.includes("@"),
+      passwordIsValid: prevState.passwordIsValid,
       formIsValid:
-        prevState.firstName &&
+        prevState.firstNameIsValid &&
         action.value.includes("@") &&
-        prevState.password.length > 6,
+        prevState.passwordIsValid,
     };
   }
   if (action.type === "PASSWORD_INPUT_CHANGED") {
@@ -36,9 +41,12 @@ const signUpReducer = (prevState, action) => {
       firstName: prevState.firstName,
       email: prevState.email,
       password: action.value,
+      firstNameIsValid: prevState.firstNameIsValid,
+      emailIsValid: prevState.emailIsValid,
+      passwordIsValid: action.value.length > 6,
       formIsValid:
-        prevState.firstName &&
-        prevState.email.includes("@") &&
+        prevState.firstNameIsValid &&
+        prevState.emailIsValid &&
         action.value.length > 6,
     };
   }
@@ -49,6 +57,9 @@ const Signup = () => {
     firstName: "",
     email: "",
     password: "",
+    firstNameIsValid: true,
+    emailIsValid: true,
+    passwordIsValid: true,
     formIsValid: false,
   });
   const navigate = useNavigate();
@@ -60,6 +71,12 @@ const Signup = () => {
     });
   };
 
+  const firstNameOnBlurHandler = (e) => {
+    if (!signUpState.firstNameIsValid) {
+      e.currentTarget.focus();
+    }
+  };
+
   const emailChangeHandler = (e) => {
     signUpDispatch({
       type: "EMAIL_INPUT_CHANGED",
@@ -67,11 +84,23 @@ const Signup = () => {
     });
   };
 
+  const emailOnBlurHandler = (e) => {
+    if (!signUpState.emailIsValid) {
+      e.currentTarget.focus();
+    }
+  };
+
   const passwordChangeHandler = (e) => {
     signUpDispatch({
       type: "PASSWORD_INPUT_CHANGED",
       value: e.currentTarget.value,
     });
+  };
+
+  const passwordOnBlurHandler = (e) => {
+    if (!signUpState.passwordIsValid) {
+      e.currentTarget.focus();
+    }
   };
 
   const signUpSubmitHandler = (e) => {
@@ -97,18 +126,24 @@ const Signup = () => {
                 placeholder="Your First Name"
                 value={signUpState.firstName}
                 onChangeHandler={firstNameChangeHandler}
+                onBlurHandler={firstNameOnBlurHandler}
+                className={!signUpState.firstNameIsValid ? "not-valid" : ""}
               />
               <Input
                 type="email"
                 placeholder="Your Email address"
                 value={signUpState.email}
                 onChangeHandler={emailChangeHandler}
+                onBlurHandler={emailOnBlurHandler}
+                className={!signUpState.emailIsValid ? "not-valid" : ""}
               />
               <Input
                 type="password"
                 placeholder="Your Password"
                 value={signUpState.password}
                 onChangeHandler={passwordChangeHandler}
+                onBlurHandler={passwordOnBlurHandler}
+                className={!signUpState.passwordIsValid ? "not-valid" : ""}
               />
               <Button
                 type="submit"

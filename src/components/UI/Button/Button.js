@@ -13,6 +13,7 @@ const Button = (props) => {
       type={props.type}
       className={classes.button}
       disabled={buttonIsDisabled}
+      onClick={props.onClickHandler}
     >
       {props.label}
     </button>

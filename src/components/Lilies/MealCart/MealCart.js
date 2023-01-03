@@ -1,37 +1,62 @@
-import React, { useState, useContext } from "react";
+import React, { useContext, useReducer } from "react";
 import { mealContext } from "../../../context/MealContext";
 
 import Modal from "../../UI/Modal/Modal";
 
 import "./MealCart.css";
 
+const mealReducer = (prevState, action) => {
+  if (action.type === "MEAL_COUNT_CHANGE") {
+    return {
+      mealCount: +action.value,
+      mealCountIsValid: +action.value > 0 && +action.value <= action.availablePiecs ? true : false,
+    };
+  }
+};
+
 const MealCart = (props) => {
   //context
   const mealCtx = useContext(mealContext);
   const { addMealToCart } = mealCtx;
 
-  // useState
-  const [mealCount, setMealCount] = useState(1);
+  // useReducer
+  const [mealState, mealDispatch] = useReducer(mealReducer, {
+    mealCount: 1,
+    mealCountIsValid: true,
+  });
 
   const meal = props.meal[0];
+  const availablePiecs = meal.availablePiecs;
 
   const mealCountHandler = (e) => {
-    setMealCount(e.currentTarget.value);
+    // setMealCount(e.currentTarget.value);
+    mealDispatch({
+      type: "MEAL_COUNT_CHANGE",
+      value: e.currentTarget.value,
+      availablePiecs: availablePiecs,
+    });
   };
 
   const mealCountAdd = () => {
-    setMealCount(mealCount + 1);
+    mealDispatch({
+      type: "MEAL_COUNT_CHANGE",
+      value: mealState.mealCount + 1,
+      availablePiecs: availablePiecs,
+    });
   };
 
   const mealCountReduce = () => {
-    setMealCount(mealCount - 1);
+    mealDispatch({
+      type: "MEAL_COUNT_CHANGE",
+      value: mealState.mealCount - 1,
+      availablePiecs: availablePiecs,
+    });
   };
 
   const cartSubmitHandler = (e) => {
     e.preventDefault();
-    const mealWithAmount = { ...meal, cartAmount: +mealCount };
+    const mealWithAmount = { ...meal, cartAmount: +mealState.mealCount };
     addMealToCart(mealWithAmount);
-    console.log(mealCount, " has been added");
   };
 
   return (
@@ -66,7 +91,7 @@ const MealCart = (props) => {
               <input
                 type="number"
                 className="action-input"
-                value={mealCount}
+                value={mealState.mealCount}
                 onChange={mealCountHandler}
                 min={1}
                 max={10}
@@ -79,7 +104,11 @@ const MealCart = (props) => {
                 +
               </button>
             </div>
-            <button type="submit" className="cart-add-to-cart-btn">
+            <button
+              type="submit"
+              className="cart-add-to-cart-btn"
+              disabled={!mealState.mealCountIsValid}
+            >
               Add to Cart
             </button>
           </form>

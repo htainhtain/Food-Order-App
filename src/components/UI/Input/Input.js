@@ -9,9 +9,10 @@ const Input = (props) => {
       id={props.id}
       name={props.name}
       placeholder={props.placeholder}
-      className={classes["auth-input"]}
+      className={`${classes["auth-input"]} ${classes[`${props.className}`]}`}
       value={props.value}
       onChange={props.onChangeHandler}
+      onBlur={props.onBlurHandler}
     />
   );
 };

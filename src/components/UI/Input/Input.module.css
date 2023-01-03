@@ -8,3 +8,7 @@ input::placeholder {
   color: var(--text-light-dark-placeholder);
   opacity: 0.5;
 }
+
+.not-valid {
+  border: 2px solid var(--text-colro-red);
+}

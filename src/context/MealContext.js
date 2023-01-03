@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useState } from "react";
+import React, { createContext, useEffect, useReducer, useState } from "react";
 
 export const mealContext = createContext({
   selectedMeals: [],
@@ -39,6 +39,16 @@ const selectedMealsreducer = (prevstate, action) => {
       (accumulator, meal) => accumulator + meal.cartAmount * meal.price,
       0
     );
+
+    localStorage.setItem(
+      "cartMeals",
+      JSON.stringify({
+        selectedMeals: newSelectedMeals,
+        totalMealsInCart: totalMealsInCart,
+        totalPrice: totalPrice,
+      })
+    );
+
     return {
       selectedMeals: newSelectedMeals,
       totalMealsInCart: totalMealsInCart,
@@ -58,6 +68,14 @@ const selectedMealsreducer = (prevstate, action) => {
       (accumulator, meal) => accumulator + meal.cartAmount * meal.price,
       0
     );
+    localStorage.setItem(
+      "cartMeals",
+      JSON.stringify({
+        selectedMeals: newSelectedMeals,
+        totalMealsInCart: totalMealsInCart,
+        totalPrice: totalPrice,
+      })
+    );
     return {
       selectedMeals: newSelectedMeals,
       totalMealsInCart: totalMealsInCart,
@@ -65,7 +83,19 @@ const selectedMealsreducer = (prevstate, action) => {
     };
   }
 
+  if (action.type === "ADD_MEALS_FROM_STORAGE") {
+    return action.meal;
+  }
+
   if (action.type === "CLEAR_MEALS_FROM_CART") {
+    localStorage.setItem(
+      "cartMeals",
+      JSON.stringify({
+        selectedMeals: [],
+        totalMealsInCart: 0,
+        totalPrice: 0,
+      })
+    );
     return {
       selectedMeals: [],
       totalMealsInCart: 0,
@@ -99,10 +129,25 @@ const MealContextProvider = (props) => {
   };
 
   const addOrders = (meals) => {
+    localStorage.setItem("orders", JSON.stringify(meals));
     setOrders(meals);
   };
 
-  console.log("orders in context: ", orders);
+  useEffect(() => {
+    const mealsInStorage = JSON.parse(localStorage.getItem("cartMeals"));
+    const orderInStorage = JSON.parse(localStorage.getItem("orders"));
+
+    if (mealsInStorage) {
+      selectedMealsDispatch({
+        type: "ADD_MEALS_FROM_STORAGE",
+        meal: mealsInStorage,
+      });
+    }
+
+    if (orderInStorage) {
+      setOrders(orderInStorage);
+    }
+  }, []);
 
   return (
     <mealContext.Provider

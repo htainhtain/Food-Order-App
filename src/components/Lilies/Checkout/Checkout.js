@@ -15,8 +15,15 @@ const paymentReducer = (prevState, action) => {
       expDate: prevState.expDate,
       cvv: prevState.cvv,
       pin: prevState.pin,
+      cardNoIsValid: /^\d+$/.test(action.value),
+      expDateIsValid: prevState.expDateIsValid,
+      cvvIsValid: prevState.cvvIsValid,
+      pinIsValid: prevState.pinIsValid,
       formIsValid:
-        action.value && prevState.expDate && prevState.cvv && prevState.pin,
+        /^\d+$/.test(action.value) &&
+        prevState.expDateIsValid &&
+        prevState.cvvIsValid &&
+        prevState.pinIsValid,
     };
   }
   if (action.type === "EXP_DATE_INPUT_CHANGED") {
@@ -25,8 +32,14 @@ const paymentReducer = (prevState, action) => {
       expDate: action.value,
       cvv: prevState.cvv,
       pin: prevState.pin,
+      cardNoIsValid: prevState.cardNoIsValid,
+      expDateIsValid: action.value ? true : false,
+      cvvIsValid: prevState.cvvIsValid,
+      pinIsValid: prevState.pinIsValid,
       formIsValid:
-        prevState.cardNo && action.value && prevState.cvv && prevState.pin,
+        prevState.cardNoIsValid && action.value
+          ? true
+          : false && prevState.cvvIsValid && prevState.pinIsValid,
     };
   }
   if (action.type === "CVV_INPUT_CHANGED") {
@@ -35,8 +48,14 @@ const paymentReducer = (prevState, action) => {
       expDate: prevState.expDate,
       cvv: action.value,
       pin: prevState.pin,
+      cardNoIsValid: prevState.cardNoIsValid,
+      expDateIsValid: prevState.expDateIsValid,
+      cvvIsValid: action.value ? true : false,
+      pinIsValid: prevState.pinIsValid,
       formIsValid:
-        prevState.cardNo && prevState.expDate && action.value && prevState.pin,
+        prevState.cardNoIsValid && prevState.expDateIsValid && action.value
+          ? true
+          : false && prevState.pinIsValid,
     };
   }
   if (action.type === "PIN_INPUT_CHANGED") {
@@ -45,8 +64,15 @@ const paymentReducer = (prevState, action) => {
       expDate: prevState.expDate,
       cvv: prevState.cvv,
       pin: action.value,
+      cardNoIsValid: prevState.cardNoIsValid,
+      expDateIsValid: prevState.expDateIsValid,
+      cvvIsValid: prevState.cvvIsValid,
+      pinIsValid: /^\d+$/.test(action.value),
       formIsValid:
-        prevState.cardNo && prevState.expDate && prevState.cvv && action.value,
+        prevState.cardNoIsValid &&
+        prevState.expDateIsValid &&
+        prevState.cvvIsValid &&
+        /^\d+$/.test(action.value),
     };
   }
   if (action.type === "CLEAR_INPUT") {
@@ -55,6 +81,10 @@ const paymentReducer = (prevState, action) => {
       expDate: "",
       cvv: "",
       pin: "",
+      cardNoIsValid: true,
+      expDateIsValid: true,
+      cvvIsValid: true,
+      pinIsValid: true,
       formIsValid: false,
     };
   }
@@ -68,13 +98,17 @@ const Checkout = (props) => {
 
   useEffect(() => {
     props.cartCloseHandler();
-  }, []);
+  }, [props]);
 
   const [paymentState, paymentDispatch] = useReducer(paymentReducer, {
     cardNo: "",
     expDate: "",
     cvv: "",
     pin: "",
+    cardNoIsValid: true,
+    expDateIsValid: true,
+    cvvIsValid: true,
+    pinIsValid: true,
     formIsValid: false,
   });
 
@@ -85,11 +119,23 @@ const Checkout = (props) => {
     });
   };
 
+  const cardNoOnBlurHandler = (e) => {
+    if (!paymentState.cardNoIsValid) {
+      e.currentTarget.focus();
+    }
+  };
+
   const expDateChangehandler = (e) => {
     paymentDispatch({
       type: "EXP_DATE_INPUT_CHANGED",
       value: e.currentTarget.value,
     });
+  };
+
+  const expDateOnBlurHandler = (e) => {
+    if (!paymentState.expDateIsValid) {
+      e.currentTarget.focus();
+    }
   };
 
   const cvvChangehandler = (e) => {
@@ -99,11 +145,23 @@ const Checkout = (props) => {
     });
   };
 
+  const cvvOnBlurHandler = (e) => {
+    if (!paymentState.cvvIsValid) {
+      e.currentTarget.focus();
+    }
+  };
+
   const pinChangehandler = (e) => {
     paymentDispatch({
       type: "PIN_INPUT_CHANGED",
       value: e.currentTarget.value,
     });
+  };
+
+  const pinOnBlurHandler = (e) => {
+    if (!paymentState.pinIsValid) {
+      e.currentTarget.focus();
+    }
   };
 
   const checkOutSubmitHandler = (e) => {
@@ -131,6 +189,8 @@ const Checkout = (props) => {
               placeholder="1111-2222-3333-4444"
               value={paymentState.cardNo}
               onChangeHandler={cardNoChangehandler}
+              onBlurHandler={cardNoOnBlurHandler}
+              className={!paymentState.cardNoIsValid ? "not-valid" : ""}
             />
             <Input
               type="text"
@@ -139,6 +199,8 @@ const Checkout = (props) => {
               placeholder="MM/YYYY"
               value={paymentState.expDate}
               onChangeHandler={expDateChangehandler}
+              onBlurHandler={expDateOnBlurHandler}
+              className={!paymentState.expDateIsValid ? "not-valid" : ""}
             />
             <Input
               type="text"
@@ -147,6 +209,8 @@ const Checkout = (props) => {
               placeholder="CVV/CVV2"
               value={paymentState.cvv}
               onChangeHandler={cvvChangehandler}
+              onBlurHandler={cvvOnBlurHandler}
+              className={!paymentState.cvvIsValid ? "not-valid" : ""}
             />
             <Input
               type="text"
@@ -155,6 +219,8 @@ const Checkout = (props) => {
               placeholder="Card Pin"
               value={paymentState.pin}
               onChangeHandler={pinChangehandler}
+              onBlurHandler={pinOnBlurHandler}
+              className={!paymentState.pinIsValid ? "not-valid" : ""}
             />
             <Button
               type="submit"

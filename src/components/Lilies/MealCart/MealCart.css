@@ -83,3 +83,12 @@
   color: white;
   cursor: pointer;
 }
+
+.cart-add-to-cart-btn:disabled,
+.cart-add-to-cart-btn:focus:disabled,
+.cart-add-to-cart-btn:hover:disabled,
+.cart-add-to-cart-btn:active:disabled {
+  background-color: #ccc;
+  color: #666666;
+  cursor: not-allowed;
+}

@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useContext, useReducer } from "react";
 
 import { useNavigate } from "react-router-dom";
 
@@ -8,37 +8,51 @@ import Button from "../../UI/Button/Button";
 import FormCard from "../../UI/FormCard/FormCard";
 
 import "./Login.css";
+import { authContext } from "../../../context/AuthContext";
 
 const loginReducer = (prevState, action) => {
   if (action.type === "EMAIL_INPUT_CHANGED") {
     return {
       email: action.value,
       password: prevState.password,
-      formIsValid: action.value.includes("@") && prevState.password.length > 6,
+      emailIsValid: action.value.includes("@"),
+      passwordIsValid: prevState.passwordIsValid,
+      formIsValid: action.value.includes("@") && prevState.passwordIsValid,
     };
   }
   if (action.type === "PASSWORD_INPUT_CHANGED") {
     return {
       email: prevState.email,
       password: action.value,
-      formIsValid: prevState.email.includes("@") && action.value.length > 6,
+      emailIsValid: prevState.emailIsValid,
+      passwordIsValid: action.value ? true : false,
+      formIsValid: prevState.emailIsValid && action.value ? true : false,
     };
   }
   if (action.type === "EMAIL_PASSWORD_CLEAR") {
     return {
       email: "",
       password: "",
+      emailIsValid: true,
+      passwordIsValid: true,
       formIsValid: false,
     };
   }
 };
 
 const Login = () => {
+  //context
+  const authCtx = useContext(authContext);
+  const { loginHandler } = authCtx;
+
   const [loginState, loginDispatch] = useReducer(loginReducer, {
     email: "",
     password: "",
+    emailIsValid: true,
+    passwordIsValid: true,
     formIsValid: false,
   });
+
   const navigate = useNavigate();
 
   const emailChangeHandler = (e) => {
@@ -48,6 +62,12 @@ const Login = () => {
     });
   };
 
+  const emailOnBlurHandler = (e) => {
+    if (!loginState.emailIsValid) {
+      e.currentTarget.focus();
+    }
+  };
+
   const passwordChangeHandler = (e) => {
     loginDispatch({
       type: "PASSWORD_INPUT_CHANGED",
@@ -55,9 +75,16 @@ const Login = () => {
     });
   };
 
+  const passwordOnBlurHandler = (e) => {
+    if (!loginState.passwordIsValid) {
+      e.currentTarget.focus();
+    }
+  };
+
   const submitHandler = (e) => {
     e.preventDefault();
     navigate("/lilies/dashboard");
+    loginHandler();
     loginDispatch({
       type: "EMAIL_PASSWORD_CLEAR",
     });
@@ -85,12 +112,16 @@ const Login = () => {
                 placeholder="Your Email address"
                 value={loginState.email}
                 onChangeHandler={emailChangeHandler}
+                onBlurHandler={emailOnBlurHandler}
+                className={!loginState.emailIsValid ? "not-valid" : ""}
               />
               <Input
                 type="password"
                 placeholder="Your Password"
                 value={loginState.password}
                 onChangeHandler={passwordChangeHandler}
+                onBlurHandler={passwordOnBlurHandler}
+                className={!loginState.passwordIsValid ? "not-valid" : ""}
               />
               <Button
                 type="submit"

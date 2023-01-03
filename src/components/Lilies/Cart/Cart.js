@@ -13,8 +13,6 @@ const Cart = (props) => {
   const { selectedMeals } = mealCtx;
   const { removeMealFromCart } = mealCtx;
 
-  console.log("selectedMeals: ", selectedMeals);
-
   return (
     <Modal closeHandler={props.cartCloseHandler}>
       <section id="order-container">
@@ -22,44 +20,54 @@ const Cart = (props) => {
           <header className="order-header">
             <h4 className="cart-header__title">Your cart</h4>
           </header>
-          <table className="order-table">
-            <thead>
-              <tr className="order-table__header">
-                <th className="order-table__table-header ">Item</th>
-                <th className="order-table__table-header order-table__table-header--center">
-                  Qty
-                </th>
-                <th className="order-table__table-header order-table__table-header--center">
-                  Unit Price
-                </th>
-                <th className="order-table__table-header order-table__table-header--center">
-                  Sub-total
-                </th>
-              </tr>
-            </thead>
-            {selectedMeals.selectedMeals.map((meal) => {
-              return (
-                <CartItem
-                  meal={meal}
-                  key={meal.id}
-                  removeMealFromCart={removeMealFromCart.bind(null, meal.id)}
-                />
-              );
-            })}
-          </table>
-          <p className="order-total-price">
-            Total:&nbsp;
-            <span className="order-total-price__number">
-              ฿ {selectedMeals.totalPrice}
-            </span>
-          </p>
-          <button
-            type="button"
-            className="order-checkout-button"
-            onClick={props.checkOutOpenHandler}
-          >
-            Checkout
-          </button>
+          {selectedMeals.selectedMeals.length !== 0 ? (
+            <>
+              <table className="order-table">
+                <thead>
+                  <tr className="order-table__header">
+                    <th className="order-table__table-header ">Item</th>
+                    <th className="order-table__table-header order-table__table-header--center">
+                      Qty
+                    </th>
+                    <th className="order-table__table-header order-table__table-header--center">
+                      Unit Price
+                    </th>
+                    <th className="order-table__table-header order-table__table-header--center">
+                      Sub-total
+                    </th>
+                  </tr>
+                </thead>
+                {selectedMeals.selectedMeals.map((meal) => {
+                  return (
+                    <CartItem
+                      meal={meal}
+                      key={meal.id}
+                      removeMealFromCart={removeMealFromCart.bind(
+                        null,
+                        meal.id
+                      )}
+                    />
+                  );
+                })}
+              </table>
+
+              <p className="order-total-price">
+                Total:&nbsp;
+                <span className="order-total-price__number">
+                  ฿ {selectedMeals.totalPrice}
+                </span>
+              </p>
+              <button
+                type="button"
+                className="order-checkout-button"
+                onClick={props.checkOutOpenHandler}
+              >
+                Checkout
+              </button>
+            </>
+          ) : (<>
+            <p>You have no items yet. Select delicious meals.</p>
+          </>)}
         </div>
       </section>
     </Modal>
