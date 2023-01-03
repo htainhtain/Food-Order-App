@@ -20,4 +20,4 @@ localhost:3000/
 
 ## live demo
 
-[Live](https://movie-app-red-pi.vercel.app/).
+[Live](https://vercel.com/htainhtain/food-order-app).
