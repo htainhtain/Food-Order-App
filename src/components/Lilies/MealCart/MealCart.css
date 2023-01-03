@@ -92,3 +92,11 @@
   color: #666666;
   cursor: not-allowed;
 }
+
+.cart__sucess {
+  width: 100%;
+  background-color: aquamarine;
+  display: flex;
+  justify-content: center;
+  padding: 1em 0em;
+}

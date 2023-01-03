@@ -1,5 +1,5 @@
 #navbar-container {
-  position: absolute;
+  position: fixed;
   width: 100%;
 }
 
@@ -16,7 +16,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 1em;
   font-size: 1.31rem;
 }
 

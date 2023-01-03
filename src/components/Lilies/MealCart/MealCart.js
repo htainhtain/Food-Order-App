@@ -1,4 +1,4 @@
-import React, { useContext, useReducer } from "react";
+import React, { useContext, useReducer, useState, useEffect } from "react";
 import { mealContext } from "../../../context/MealContext";
 
 import Modal from "../../UI/Modal/Modal";
@@ -9,7 +9,10 @@ const mealReducer = (prevState, action) => {
   if (action.type === "MEAL_COUNT_CHANGE") {
     return {
       mealCount: +action.value,
-      mealCountIsValid: +action.value > 0 && +action.value <= action.availablePiecs ? true : false,
+      mealCountIsValid:
+        +action.value > 0 && +action.value <= action.availablePiecs
+          ? true
+          : false,
     };
   }
 };
@@ -18,18 +21,19 @@ const MealCart = (props) => {
   //context
   const mealCtx = useContext(mealContext);
   const { addMealToCart } = mealCtx;
+  const { selectedMeals } = mealCtx;
 
   // useReducer
   const [mealState, mealDispatch] = useReducer(mealReducer, {
     mealCount: 1,
     mealCountIsValid: true,
   });
+  const [sucessAlert, setSuccessAlert] = useState(false);
 
   const meal = props.meal[0];
   const availablePiecs = meal.availablePiecs;
 
   const mealCountHandler = (e) => {
-    // setMealCount(e.currentTarget.value);
     mealDispatch({
       type: "MEAL_COUNT_CHANGE",
       value: e.currentTarget.value,
@@ -57,7 +61,18 @@ const MealCart = (props) => {
     e.preventDefault();
     const mealWithAmount = { ...meal, cartAmount: +mealState.mealCount };
     addMealToCart(mealWithAmount);
+    setSuccessAlert(true);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSuccessAlert(false);
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [selectedMeals.totalMealsInCart]);
 
   return (
     <Modal closeHandler={props.mealCartCloseHandler}>
@@ -112,6 +127,7 @@ const MealCart = (props) => {
               Add to Cart
             </button>
           </form>
+          {sucessAlert && <div className="cart__sucess">Added to cart</div>}
         </div>
       </section>
     </Modal>

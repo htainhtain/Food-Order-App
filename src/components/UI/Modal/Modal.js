@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 import "./Modal.css";
@@ -18,6 +18,20 @@ const ModalOverlay = (props) => {
 const portals = document.querySelector("#portals");
 
 const Modal = (props) => {
+  const escFunction = useCallback((event) => {
+    if (event.key === "Escape") {
+      props.closeHandler();
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keydown", escFunction, false);
+
+    return () => {
+      document.removeEventListener("keydown", escFunction, false);
+    };
+  }, []);
+  
   return (
     <>
       {ReactDOM.createPortal(
