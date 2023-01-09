@@ -5,6 +5,7 @@
 
 .navbar {
   width: 80%;
+  max-width: 1440px;
   display: flex;
   justify-content: space-between;
   list-style: none;
