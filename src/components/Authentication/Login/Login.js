@@ -1,6 +1,7 @@
-import React, { useContext, useReducer } from "react";
-
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { authContext } from "../../../context/AuthContext";
+import useInput from "../../../hooks/useInput";
+// import { useNavigate } from "react-router-dom";
 
 import loginImg from "../../../assets/img/login/login-img.png";
 import Input from "../../UI/Input/Input";
@@ -8,87 +9,53 @@ import Button from "../../UI/Button/Button";
 import FormCard from "../../UI/FormCard/FormCard";
 
 import "./Login.css";
-import { authContext } from "../../../context/AuthContext";
 
-const loginReducer = (prevState, action) => {
-  if (action.type === "EMAIL_INPUT_CHANGED") {
-    return {
-      email: action.value,
-      password: prevState.password,
-      emailIsValid: action.value.includes("@"),
-      passwordIsValid: prevState.passwordIsValid,
-      formIsValid: action.value.includes("@") && prevState.passwordIsValid,
-    };
-  }
-  if (action.type === "PASSWORD_INPUT_CHANGED") {
-    return {
-      email: prevState.email,
-      password: action.value,
-      emailIsValid: prevState.emailIsValid,
-      passwordIsValid: action.value ? true : false,
-      formIsValid: prevState.emailIsValid && action.value ? true : false,
-    };
-  }
-  if (action.type === "EMAIL_PASSWORD_CLEAR") {
-    return {
-      email: "",
-      password: "",
-      emailIsValid: null,
-      passwordIsValid: null,
-      formIsValid: false,
-    };
-  }
+
+const emailValidate = (value) => {
+  return value.includes("@");
 };
+
+const passwordValidate = (value) => {
+  return value.length > 0;
+}
 
 const Login = () => {
   //context
   const authCtx = useContext(authContext);
   const { loginHandler } = authCtx;
 
-  const [loginState, loginDispatch] = useReducer(loginReducer, {
-    email: "",
-    password: "",
-    emailIsValid: null,
-    passwordIsValid: null,
-    formIsValid: false,
-  });
+  const {
+    input: email,
+    inputIsValid: emailIsValid,
+    inputChangeHandler: emailChangeHandler,
+    inputOnBlur: emailOnBlurHandler,
+    inputHasError: emailHasError
+  } = useInput(emailValidate);
 
-  const navigate = useNavigate();
+  const {
+    input: password,
+    inputIsValid: passwordIsValid,
+    inputChangeHandler: passwordChangeHandler,
+    inputOnBlur: passwordOnBlurHandler,
+    inputHasError: passwordHasError
+  } = useInput(passwordValidate);
 
-  const emailChangeHandler = (e) => {
-    loginDispatch({
-      type: "EMAIL_INPUT_CHANGED",
-      value: e.currentTarget.value,
-    });
-  };
+  const formIsValid = emailIsValid && passwordIsValid;
+  const [loginError, setLoginError] = useState("");
 
-  const emailOnBlurHandler = (e) => {
-    if (!loginState.emailIsValid) {
-      e.currentTarget.focus();
-    }
-  };
-
-  const passwordChangeHandler = (e) => {
-    loginDispatch({
-      type: "PASSWORD_INPUT_CHANGED",
-      value: e.currentTarget.value,
-    });
-  };
-
-  const passwordOnBlurHandler = (e) => {
-    if (!loginState.passwordIsValid) {
-      e.currentTarget.focus();
-    }
+  const LoginErrorHandler = (error) => {
+    console.log("error: ", error);
+    setLoginError(error);
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    navigate("/lilies/dashboard");
-    loginHandler();
-    loginDispatch({
-      type: "EMAIL_PASSWORD_CLEAR",
-    });
+    loginHandler(email, password, LoginErrorHandler);
+    // navigate("/lilies/dashboard");
   };
+
+  const emailClass = emailHasError ? "not-valid" : "";
+  const passwordClass = passwordHasError ? "not-valid" : "";
 
   return (
     <section id="login-container">
@@ -107,29 +74,38 @@ const Login = () => {
               <h3 className="login-form-title">Welcome Back!</h3>
             </header>
             <FormCard submitHandler={submitHandler}>
-              <Input
-                type="email"
-                placeholder="Your Email address"
-                value={loginState.email}
-                onChangeHandler={emailChangeHandler}
-                onBlurHandler={emailOnBlurHandler}
-                className={loginState.emailIsValid === false ? "not-valid" : ""}
-              />
-              <Input
-                type="password"
-                placeholder="Your Password"
-                value={loginState.password}
-                onChangeHandler={passwordChangeHandler}
-                onBlurHandler={passwordOnBlurHandler}
-                className={
-                  loginState.passwordIsValid === false ? "not-valid" : ""
-                }
-              />
-              <Button
-                type="submit"
-                label="LOGIN"
-                formIsValid={loginState.formIsValid}
-              />
+              <div>
+                <Input
+                  type="email"
+                  placeholder="Your Email address"
+                  value={email}
+                  onChangeHandler={emailChangeHandler}
+                  onBlurHandler={emailOnBlurHandler}
+                  className={emailClass}
+                />
+                {emailHasError && (
+                  <p className="login-error">Please Enter valid email!</p>
+                )}
+              </div>
+
+              <div>
+                <Input
+                  type="password"
+                  placeholder="Your Password"
+                  value={password}
+                  onChangeHandler={passwordChangeHandler}
+                  onBlurHandler={passwordOnBlurHandler}
+                  className={passwordClass}
+                />
+                {passwordHasError && (
+                  <p className="login-error">Password cannot be empty!</p>
+                )}
+              </div>
+
+              <Button type="submit" label="LOGIN" formIsValid={formIsValid} />
+              {loginError !== "" && (
+                <p className="login-error">{loginError}</p>
+              ) }
             </FormCard>
             <div className="create-forget-action">
               <a href="/auth/signup">Create an account</a>

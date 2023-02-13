@@ -1,5 +1,6 @@
-import React, { useReducer } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+import useInput from "../../../hooks/useInput";
 
 import signupImg from "../../../assets/img/signup/signup-img.png";
 import Input from "../../UI/Input/Input";
@@ -7,106 +8,105 @@ import Button from "../../UI/Button/Button";
 import FormCard from "../../UI/FormCard/FormCard";
 
 import "./Signup.css";
+import { authContext } from "../../../context/AuthContext";
 
-const signUpReducer = (prevState, action) => {
-  if (action.type === "FIRSTNAME_INPUT_CHANGED") {
-    return {
-      firstName: action.value,
-      email: prevState.email,
-      password: prevState.password,
-      firstNameIsValid: action.value ? true : false,
-      emailIsValid: prevState.emailIsValid,
-      passwordIsValid: prevState.passwordIsValid,
-      formIsValid: action.value
-        ? true
-        : false && prevState.emailIsValid && prevState.passwordIsValid,
-    };
-  }
-  if (action.type === "EMAIL_INPUT_CHANGED") {
-    return {
-      firstName: prevState.firstName,
-      email: action.value,
-      password: prevState.password,
-      firstNameIsValid: prevState.firstNameIsValid,
-      emailIsValid: action.value.includes("@"),
-      passwordIsValid: prevState.passwordIsValid,
-      formIsValid:
-        prevState.firstNameIsValid &&
-        action.value.includes("@") &&
-        prevState.passwordIsValid,
-    };
-  }
-  if (action.type === "PASSWORD_INPUT_CHANGED") {
-    return {
-      firstName: prevState.firstName,
-      email: prevState.email,
-      password: action.value,
-      firstNameIsValid: prevState.firstNameIsValid,
-      emailIsValid: prevState.emailIsValid,
-      passwordIsValid: action.value.length > 6,
-      formIsValid:
-        prevState.firstNameIsValid &&
-        prevState.emailIsValid &&
-        action.value.length > 6,
-    };
-  }
+const validateFirstName = (value) => {
+  return value.trim().length > 0;
+};
+
+const validateEmail = (value) => {
+  return value.includes("@");
+};
+
+const validatePassword = (value) => {
+  return value.length >= 8 && value.length <= 32;
 };
 
 const Signup = () => {
-  const [signUpState, signUpDispatch] = useReducer(signUpReducer, {
-    firstName: "",
-    email: "",
-    password: "",
-    firstNameIsValid: null,
-    emailIsValid: null,
-    passwordIsValid: null,
-    formIsValid: false,
+  //context
+  const { signUpHandler } = useContext(authContext);
+
+  const {
+    input: firstName,
+    inputIsValid: firstNameIsValid,
+    inputChangeHandler: firstNameChangeHandler,
+    inputOnBlur: firstNameOnBlurHandler,
+    inputHasError: firstNameHasError,
+    resetValue: resetFirstName,
+  } = useInput(validateFirstName);
+
+  const {
+    input: email,
+    inputIsValid: emailIsValid,
+    inputChangeHandler: emailChangeHandler,
+    inputOnBlur: emailOnBlurHandler,
+    inputHasError: emailHasError,
+    resetValue: resetEmail,
+  } = useInput(validateEmail);
+
+  const {
+    input: password,
+    inputIsValid: passwordIsValid,
+    inputChangeHandler: passwordChangeHandler,
+    inputOnBlur: passwordOnBlurHandler,
+    inputHasError: passwordHasError,
+    resetValue: resetPassword,
+  } = useInput(validatePassword);
+
+  // const [signUpError, SetSignUpError] = useState("");
+  // const [signUpSuccess, setSignUpSuccess] = useState(null)
+  const [alert, setAlert] = useState({
+    Alert: null,
+    Message: "",
   });
-  const navigate = useNavigate();
+  const [isloading, setIsLoading] = useState(false);
 
-  const firstNameChangeHandler = (e) => {
-    signUpDispatch({
-      type: "FIRSTNAME_INPUT_CHANGED",
-      value: e.currentTarget.value,
+  const formIsValid = firstNameIsValid && emailIsValid && passwordIsValid;
+
+  const resetForm = () => {
+    resetFirstName();
+    resetEmail();
+    resetPassword();
+  };
+
+  const formIsSubmitting = () => {
+    setIsLoading(true);
+  };
+
+  const formIsSubmitted = () => {
+    setIsLoading(false);
+  };
+
+  // const navigate = useNavigate();
+
+  const signUpAlertHandler = (alert) => {
+    setAlert({
+      Alert: alert.Alert,
+      Message: alert.Message,
     });
-  };
-
-  const firstNameOnBlurHandler = (e) => {
-    if (!signUpState.firstNameIsValid) {
-      e.currentTarget.focus();
-    }
-  };
-
-  const emailChangeHandler = (e) => {
-    signUpDispatch({
-      type: "EMAIL_INPUT_CHANGED",
-      value: e.currentTarget.value,
-    });
-  };
-
-  const emailOnBlurHandler = (e) => {
-    if (!signUpState.emailIsValid) {
-      e.currentTarget.focus();
-    }
-  };
-
-  const passwordChangeHandler = (e) => {
-    signUpDispatch({
-      type: "PASSWORD_INPUT_CHANGED",
-      value: e.currentTarget.value,
-    });
-  };
-
-  const passwordOnBlurHandler = (e) => {
-    if (!signUpState.passwordIsValid) {
-      e.currentTarget.focus();
-    }
   };
 
   const signUpSubmitHandler = (e) => {
     e.preventDefault();
-    navigate("/auth/login");
+    signUpHandler(
+      firstName,
+      email,
+      password,
+      resetForm,
+      signUpAlertHandler,
+      formIsSubmitting,
+      formIsSubmitted
+    );
+    // navigate("/auth/login");
   };
+
+  console.log("alert: ", alert);
+
+  const firstNameClass = firstNameHasError ? "not-valid" : "";
+  const emailClass = emailHasError ? "not-valid" : "";
+  const passwordClass = passwordHasError ? "not-valid" : "";
+
+  console.log("isLoading: ", isloading);
 
   return (
     <section id="signup-container">
@@ -124,39 +124,48 @@ const Signup = () => {
               <Input
                 type="text"
                 placeholder="Your First Name"
-                value={signUpState.firstName}
+                value={firstName}
                 onChangeHandler={firstNameChangeHandler}
                 onBlurHandler={firstNameOnBlurHandler}
-                className={
-                  signUpState.firstNameIsValid === false ? "not-valid" : ""
-                }
+                className={firstNameClass}
               />
+              {firstNameHasError && (
+                <p className="login-error">Please Enter valid email!</p>
+              )}
               <Input
                 type="email"
                 placeholder="Your Email address"
-                value={signUpState.email}
+                value={email}
                 onChangeHandler={emailChangeHandler}
                 onBlurHandler={emailOnBlurHandler}
-                className={
-                  signUpState.emailIsValid === false ? "not-valid" : ""
-                }
+                className={emailClass}
               />
+              {emailHasError && (
+                <p className="login-error">Please Enter valid first name!</p>
+              )}
               <Input
                 type="password"
                 placeholder="Your Password"
-                value={signUpState.password}
+                value={password}
                 onChangeHandler={passwordChangeHandler}
                 onBlurHandler={passwordOnBlurHandler}
-                className={
-                  signUpState.passwordIsValid === false ? "not-valid" : ""
-                }
+                className={passwordClass}
               />
-              <Button
-                type="submit"
-                label="SIGN UP"
-                formIsValid={signUpState.formIsValid}
-              />
+              {passwordHasError && (
+                <p className="login-error">
+                  Password should be at least 8 characters!
+                </p>
+              )}
+              <Button type="submit" label="SIGN UP" formIsValid={formIsValid} />
+              {alert.Alert === "Success" ? (
+                <p>{alert.Message}</p>
+              ) : (
+                <>
+                  <p className="login-error">{alert.Message}</p>
+                </>
+              )}
             </FormCard>
+            {isloading && <p>Loading....</p>}
             <div className="account-login-action">
               <p>
                 Already Have an account ?

@@ -55,3 +55,7 @@
   width: 100%;
   color: var(--text-color-green);
 }
+
+.login-error {
+  color: var(--text-colro-red);
+}
